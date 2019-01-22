@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'pry-byebug'
+require 'yaml'
 
 BASE_URL = 'http://www.imdb.com'
 
@@ -29,4 +30,11 @@ def scrape_movie(movie_url)
     title: title,
     year: year
   }
+end
+
+def save_top_movies_to_yaml
+  top_movies = fetch_movies_url.map { |movie_url| scrape_movie(movie_url) }
+  File.open("imdb_top_movies.yml", "w") do |f|
+    f.write(top_movies.to_yaml)
+  end
 end
